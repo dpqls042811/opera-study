@@ -8,1337 +8,830 @@
     <meta name="apple-mobile-web-app-title" content="규니의 아리아 노트">
     <title>규니의 아리아 노트 🎭</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', sans-serif;
-            background-color: #F2F2F7;
-            color: #1C1C1E;
-            min-height: 100vh;
-        }
-
-        .nav-bar {
-            background: rgba(255,255,255,0.92);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-bottom: 0.5px solid rgba(0,0,0,0.1);
-            padding: 14px 20px;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .nav-title {
-            font-size: 17px;
-            font-weight: 600;
-            color: #1C1C1E;
-        }
-
-        .nav-back {
-            font-size: 17px;
-            color: #007AFF;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 2px;
-            background: none;
-            border: none;
-            padding: 0;
-            font-family: inherit;
-        }
-
-        .main-header {
-            padding: 24px 20px 8px;
-        }
-
-        .main-title {
-            font-size: 34px;
-            font-weight: 700;
-            letter-spacing: -0.5px;
-        }
-
-        .main-subtitle {
-            font-size: 15px;
-            color: #8E8E93;
-            margin-top: 4px;
-        }
-
-        .segment-control {
-            display: flex;
-            background: #E5E5EA;
-            border-radius: 9px;
-            padding: 2px;
-            margin: 16px 20px;
-        }
-
-        .segment-btn {
-            flex: 1;
-            padding: 7px;
-            border: none;
-            background: transparent;
-            border-radius: 7px;
-            font-size: 13px;
-            font-weight: 500;
-            color: #8E8E93;
-            cursor: pointer;
-            transition: all 0.2s;
-            font-family: inherit;
-        }
-
-        .segment-btn.active {
-            background: white;
-            color: #1C1C1E;
-            font-weight: 600;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.12);
-        }
-
-        .section {
-            margin: 0 20px 24px;
-        }
-
-        .section-label {
-            font-size: 13px;
-            font-weight: 600;
-            color: #8E8E93;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 8px;
-            padding-left: 4px;
-        }
-
-        .card-list {
-            background: white;
-            border-radius: 12px;
-            overflow: hidden;
-        }
-
-        .card-item {
-            display: flex;
-            align-items: center;
-            padding: 13px 16px;
-            cursor: pointer;
-            border-bottom: 0.5px solid #F2F2F7;
-            transition: background 0.15s;
-        }
-
-        .card-item:last-child {
-            border-bottom: none;
-        }
-
-        .card-item:active {
-            background: #F2F2F7;
-        }
-
-        .card-icon {
-            width: 38px;
-            height: 38px;
-            border-radius: 9px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
-            margin-right: 13px;
-            flex-shrink: 0;
-        }
-
-        .card-content {
-            flex: 1;
-            min-width: 0;
-        }
-
-        .card-title {
-            font-size: 16px;
-            font-weight: 500;
-            color: #1C1C1E;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .card-subtitle {
-            font-size: 13px;
-            color: #8E8E93;
-            margin-top: 1px;
-        }
-
-        .card-right {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            margin-left: 8px;
-        }
-
-        .card-badge {
-            background: #E5E5EA;
-            color: #8E8E93;
-            font-size: 12px;
-            font-weight: 600;
-            padding: 2px 8px;
-            border-radius: 10px;
-        }
-
-        .card-chevron {
-            color: #C7C7CC;
-            font-size: 18px;
-            line-height: 1;
-        }
-
-        /* 작곡가 색상 */
-        .bg-verdi     { background: #E5F0FF; }
-        .bg-mozart    { background: #FFE5E5; }
-        .bg-giordano  { background: #FFF0E5; }
-        .bg-leoncav   { background: #E5FFE9; }
-        .bg-wagner    { background: #F0E5FF; }
-        .bg-rossini   { background: #FFFFE5; }
-        .bg-gounod    { background: #E5FFFE; }
-        .bg-korngold  { background: #FFE5F5; }
-
-        /* 화면 전환 */
-        .screen { display: none; }
-        .screen.active { display: block; }
-
-        /* 작곡가 화면 헤더 */
-        .composer-header {
-            padding: 20px 20px 8px;
-        }
-
-        .composer-title {
-            font-size: 28px;
-            font-weight: 700;
-            letter-spacing: -0.3px;
-        }
-
-        .composer-sub {
-            font-size: 15px;
-            color: #8E8E93;
-            margin-top: 3px;
-        }
-
-        /* 상세 화면 */
-        .detail-hero {
-            background: white;
-            padding: 20px;
-            border-bottom: 0.5px solid #E5E5EA;
-            margin-bottom: 20px;
-        }
-
-        .detail-opera-label {
-            font-size: 13px;
-            font-weight: 600;
-            color: #007AFF;
-            margin-bottom: 6px;
-            text-transform: uppercase;
-            letter-spacing: 0.3px;
-        }
-
-        .detail-title {
-            font-size: 26px;
-            font-weight: 700;
-            letter-spacing: -0.3px;
-            margin-bottom: 4px;
-        }
-
-        .detail-composer {
-            font-size: 15px;
-            color: #8E8E93;
-            margin-bottom: 14px;
-        }
-
-        .detail-tags {
-            display: flex;
-            gap: 7px;
-            flex-wrap: wrap;
-        }
-
-        .tag {
-            font-size: 12px;
-            font-weight: 500;
-            padding: 4px 10px;
-            border-radius: 20px;
-        }
-
-        .tag-blue  { background: #E5F0FF; color: #007AFF; }
-        .tag-gray  { background: #F2F2F7; color: #3C3C43; }
-        .tag-green { background: #E5FFE9; color: #34C759; }
-
-        /* 섹션 타이틀 */
-        .section-title {
-            font-size: 13px;
-            font-weight: 600;
-            color: #8E8E93;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin: 0 20px 8px;
-            padding-left: 4px;
-        }
-
-        /* 가사 카드 */
-        .lyrics-card {
-            background: white;
-            border-radius: 12px;
-            margin: 0 20px 20px;
-            overflow: hidden;
-            border-left: 3px solid #007AFF;
-        }
-
-        .lyrics-row {
-            padding: 14px 16px;
-            border-bottom: 0.5px solid #F2F2F7;
-        }
-
-        .lyrics-row:last-child { border-bottom: none; }
-
-        .lyrics-original {
-            font-size: 17px;
-            font-weight: 500;
-            color: #1C1C1E;
-            margin-bottom: 5px;
-            line-height: 1.5;
-            font-style: italic;
-        }
-
-        .lyrics-ipa {
-            font-size: 13px;
-            color: #007AFF;
-            margin-bottom: 4px;
-            font-family: 'Lucida Sans Unicode', 'Arial Unicode MS', sans-serif;
-        }
-
-        .lyrics-translation {
-            font-size: 14px;
-            color: #8E8E93;
-        }
-
-        /* 단어 그리드 */
-        .word-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin: 0 20px 20px;
-        }
-
-        .word-card {
-            background: white;
-            border-radius: 12px;
-            padding: 14px;
-        }
-
-        .word-original {
-            font-size: 17px;
-            font-weight: 700;
-            color: #1C1C1E;
-            margin-bottom: 4px;
-        }
-
-        .word-ipa {
-            font-size: 13px;
-            color: #007AFF;
-            margin-bottom: 6px;
-            font-family: 'Lucida Sans Unicode', 'Arial Unicode MS', sans-serif;
-        }
-
-        .word-meaning {
-            font-size: 14px;
-            color: #3C3C43;
-            margin-bottom: 2px;
-        }
-
-        .word-type {
-            font-size: 12px;
-            color: #8E8E93;
-        }
-
-        /* 번역 카드 */
-        .translation-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin: 0 20px 30px;
-        }
-
-        .translation-card {
-            background: white;
-            border-radius: 12px;
-            padding: 14px;
-        }
-
-        .translation-label {
-            font-size: 12px;
-            font-weight: 600;
-            margin-bottom: 8px;
-        }
-
-        .label-literal  { color: #34C759; }
-        .label-liberal  { color: #FF9500; }
-
-        .translation-text {
-            font-size: 14px;
-            color: #3C3C43;
-            line-height: 1.7;
-        }
-
-        .pb40 { padding-bottom: 40px; }
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', sans-serif; background-color: #F2F2F7; color: #1C1C1E; min-height: 100vh; }
+        .nav-bar { background: rgba(255,255,255,0.85); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-bottom: 0.5px solid rgba(0,0,0,0.1); padding: 12px 20px; position: sticky; top: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; }
+        .nav-title { font-size: 17px; font-weight: 600; color: #1C1C1E; }
+        .nav-back { font-size: 17px; color: #007AFF; cursor: pointer; display: flex; align-items: center; gap: 4px; background: none; border: none; padding: 0; }
+        .main-header { padding: 20px 20px 10px; }
+        .main-title { font-size: 34px; font-weight: 700; color: #1C1C1E; letter-spacing: -0.5px; }
+        .main-subtitle { font-size: 15px; color: #8E8E93; margin-top: 4px; }
+        .section { margin: 0 20px 24px; }
+        .section-header { font-size: 13px; font-weight: 600; color: #8E8E93; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; padding-left: 4px; }
+        .card-list { background: white; border-radius: 12px; overflow: hidden; }
+        .card-item { display: flex; align-items: center; padding: 14px 16px; cursor: pointer; transition: background 0.15s; border-bottom: 0.5px solid #F2F2F7; }
+        .card-item:last-child { border-bottom: none; }
+        .card-item:active { background: #F2F2F7; }
+        .card-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px; margin-right: 14px; flex-shrink: 0; }
+        .card-content { flex: 1; }
+        .card-title { font-size: 16px; font-weight: 500; color: #1C1C1E; margin-bottom: 2px; }
+        .card-subtitle { font-size: 13px; color: #8E8E93; }
+        .card-chevron { color: #C7C7CC; font-size: 14px; margin-left: 8px; }
+        .page { display: none; }
+        .page.active { display: block; }
+        .detail-header { background: white; padding: 20px; margin-bottom: 16px; border-bottom: 0.5px solid #E5E5EA; }
+        .detail-opera { font-size: 13px; color: #007AFF; font-weight: 500; margin-bottom: 6px; }
+        .detail-title { font-size: 22px; font-weight: 700; color: #1C1C1E; margin-bottom: 4px; letter-spacing: -0.3px; }
+        .detail-composer { font-size: 15px; color: #8E8E93; }
+        .segment-wrap { padding: 0 20px; margin-bottom: 16px; }
+        .segment-control { display: flex; background: #E5E5EA; border-radius: 9px; padding: 2px; }
+        .segment-btn { flex: 1; padding: 7px; border: none; background: transparent; border-radius: 7px; font-size: 13px; font-weight: 500; color: #8E8E93; cursor: pointer; transition: all 0.2s; }
+        .segment-btn.active { background: white; color: #1C1C1E; font-weight: 600; box-shadow: 0 1px 3px rgba(0,0,0,0.12); }
+        .tab-content { display: none; padding: 0 20px; }
+        .tab-content.active { display: block; }
+        .lyric-line { background: white; border-radius: 10px; padding: 14px 16px; margin-bottom: 8px; cursor: pointer; font-size: 16px; color: #1C1C1E; transition: background 0.15s; border: 1px solid transparent; }
+        .lyric-line:active { background: #F2F2F7; }
+        .lyric-line.active { background: #E5F0FF; border-color: #007AFF; color: #007AFF; }
+        .analysis-panel { display: none; background: white; border-radius: 10px; padding: 16px; margin-bottom: 8px; margin-top: -4px; border-left: 3px solid #007AFF; }
+        .analysis-panel.active { display: block; }
+        .analysis-label { font-size: 11px; font-weight: 700; color: #007AFF; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 8px; margin-top: 12px; }
+        .analysis-label:first-child { margin-top: 0; }
+        .word-grid { display: flex; flex-wrap: wrap; gap: 8px; }
+        .word-chip { background: #F2F2F7; border-radius: 8px; padding: 8px 12px; }
+        .word-chip .w { font-size: 15px; font-weight: 600; color: #1C1C1E; }
+        .word-chip .ipa { font-size: 12px; color: #8E8E93; margin-top: 2px; }
+        .word-chip .meaning { font-size: 12px; color: #007AFF; margin-top: 2px; }
+        .literal-text { font-size: 15px; color: #3C3C43; line-height: 1.5; }
+        .free-text { font-size: 15px; color: #1C1C1E; font-weight: 500; line-height: 1.5; }
+        .vocab-item { background: white; border-radius: 10px; padding: 14px 16px; margin-bottom: 8px; display: flex; align-items: flex-start; gap: 12px; }
+        .vocab-word { font-size: 17px; font-weight: 600; color: #1C1C1E; min-width: 100px; }
+        .vocab-right { flex: 1; }
+        .vocab-ipa { font-size: 13px; color: #8E8E93; margin-bottom: 3px; }
+        .vocab-meaning { font-size: 14px; color: #007AFF; }
+        .translation-item { background: white; border-radius: 10px; padding: 14px 16px; margin-bottom: 8px; }
+        .trans-original { font-size: 15px; color: #8E8E93; font-style: italic; margin-bottom: 8px; line-height: 1.5; }
+        .trans-literal { font-size: 14px; color: #3C3C43; margin-bottom: 6px; line-height: 1.5; }
+        .trans-label { font-size: 11px; font-weight: 700; color: #8E8E93; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 3px; }
+        .trans-free { font-size: 15px; color: #1C1C1E; font-weight: 500; line-height: 1.5; }
     </style>
 </head>
 <body>
 
-<!-- ── 화면 1: 메인 ── -->
-<div id="screen-main" class="screen active">
+<div id="main-page" class="page active">
     <div class="nav-bar">
-        <span style="width:60px"></span>
-        <span class="nav-title">규니의 아리아 노트 🎭</span>
-        <span style="width:60px"></span>
+        <div style="width:60px"></div>
+        <div class="nav-title">규니의 아리아 노트</div>
+        <div style="width:60px"></div>
     </div>
-
     <div class="main-header">
-        <div class="main-title">아리아 노트</div>
-        <div class="main-subtitle">규니를 위한 오페라 공부 앱 💌</div>
+        <div class="main-title">아리아 노트 🎭</div>
+        <div class="main-subtitle">16곡 · 바리톤 레퍼토리</div>
     </div>
-
-    <div class="segment-control">
-        <button class="segment-btn active" onclick="showTab('composer')">작곡가별</button>
-        <button class="segment-btn" onclick="showTab('all')">전체 목록</button>
-    </div>
-
-    <!-- 작곡가별 -->
-    <div id="tab-composer">
+    <div style="padding: 10px 0 20px;">
         <div class="section">
-            <div class="section-label">작곡가</div>
+            <div class="section-header">베르디</div>
             <div class="card-list">
-                <div class="card-item" onclick="showComposer('verdi')">
-                    <div class="card-icon bg-verdi">🎭</div>
+                <div class="card-item" onclick="openAria('eri-tu')">
+                    <div class="card-icon" style="background:#E5F0FF;">🎭</div>
                     <div class="card-content">
-                        <div class="card-title">Giuseppe Verdi</div>
-                        <div class="card-subtitle">1813 – 1901</div>
+                        <div class="card-title">Eri tu che macchiavi quell'anima</div>
+                        <div class="card-subtitle">가면무도회</div>
                     </div>
-                    <div class="card-right">
-                        <span class="card-badge">7</span>
-                        <span class="card-chevron">›</span>
-                    </div>
+                    <div class="card-chevron">›</div>
                 </div>
-                <div class="card-item" onclick="showComposer('mozart')">
-                    <div class="card-icon bg-mozart">🎼</div>
+                <div class="card-item" onclick="openAria('il-balen')">
+                    <div class="card-icon" style="background:#E5F0FF;">🎭</div>
                     <div class="card-content">
-                        <div class="card-title">Wolfgang Amadeus Mozart</div>
-                        <div class="card-subtitle">1756 – 1791</div>
+                        <div class="card-title">Il balen del suo sorriso</div>
+                        <div class="card-subtitle">트로바토레</div>
                     </div>
-                    <div class="card-right">
-                        <span class="card-badge">3</span>
-                        <span class="card-chevron">›</span>
-                    </div>
+                    <div class="card-chevron">›</div>
                 </div>
-                <div class="card-item" onclick="showComposer('giordano')">
-                    <div class="card-icon bg-giordano">🔥</div>
+                <div class="card-item" onclick="openAria('cortigiani')">
+                    <div class="card-icon" style="background:#E5F0FF;">🎭</div>
                     <div class="card-content">
-                        <div class="card-title">Umberto Giordano</div>
-                        <div class="card-subtitle">1867 – 1948</div>
+                        <div class="card-title">Cortigiani, vil razza dannata</div>
+                        <div class="card-subtitle">리골레토</div>
                     </div>
-                    <div class="card-right">
-                        <span class="card-badge">1</span>
-                        <span class="card-chevron">›</span>
-                    </div>
+                    <div class="card-chevron">›</div>
                 </div>
-                <div class="card-item" onclick="showComposer('leoncavallo')">
-                    <div class="card-icon bg-leoncav">🎪</div>
+                <div class="card-item" onclick="openAria('di-provenza')">
+                    <div class="card-icon" style="background:#E5F0FF;">🎭</div>
                     <div class="card-content">
-                        <div class="card-title">Ruggero Leoncavallo</div>
-                        <div class="card-subtitle">1857 – 1919</div>
+                        <div class="card-title">Di Provenza il mar, il suol</div>
+                        <div class="card-subtitle">라 트라비아타</div>
                     </div>
-                    <div class="card-right">
-                        <span class="card-badge">1</span>
-                        <span class="card-chevron">›</span>
-                    </div>
+                    <div class="card-chevron">›</div>
                 </div>
-                <div class="card-item" onclick="showComposer('wagner')">
-                    <div class="card-icon bg-wagner">⚡</div>
+                <div class="card-item" onclick="openAria('per-me-giunto')">
+                    <div class="card-icon" style="background:#E5F0FF;">🎭</div>
                     <div class="card-content">
-                        <div class="card-title">Richard Wagner</div>
-                        <div class="card-subtitle">1813 – 1883</div>
+                        <div class="card-title">Per me giunto è il dì supremo</div>
+                        <div class="card-subtitle">돈 카를로</div>
                     </div>
-                    <div class="card-right">
-                        <span class="card-badge">1</span>
-                        <span class="card-chevron">›</span>
-                    </div>
+                    <div class="card-chevron">›</div>
                 </div>
-                <div class="card-item" onclick="showComposer('rossini')">
-                    <div class="card-icon bg-rossini">🌟</div>
+                <div class="card-item" onclick="openAria('io-morro')">
+                    <div class="card-icon" style="background:#E5F0FF;">🎭</div>
                     <div class="card-content">
-                        <div class="card-title">Gioachino Rossini</div>
-                        <div class="card-subtitle">1792 – 1868</div>
+                        <div class="card-title">Io morrò, ma lieto in core</div>
+                        <div class="card-subtitle">돈 카를로</div>
                     </div>
-                    <div class="card-right">
-                        <span class="card-badge">1</span>
-                        <span class="card-chevron">›</span>
-                    </div>
+                    <div class="card-chevron">›</div>
                 </div>
-                <div class="card-item" onclick="showComposer('gounod')">
-                    <div class="card-icon bg-gounod">🌿</div>
+                <div class="card-item" onclick="openAria('pieta-rispetto')">
+                    <div class="card-icon" style="background:#E5F0FF;">🎭</div>
                     <div class="card-content">
-                        <div class="card-title">Charles Gounod</div>
-                        <div class="card-subtitle">1818 – 1893</div>
+                        <div class="card-title">Pietà, rispetto, amore</div>
+                        <div class="card-subtitle">맥베스</div>
                     </div>
-                    <div class="card-right">
-                        <span class="card-badge">1</span>
-                        <span class="card-chevron">›</span>
-                    </div>
+                    <div class="card-chevron">›</div>
                 </div>
-                <div class="card-item" onclick="showComposer('korngold')">
-                    <div class="card-icon bg-korngold">🌙</div>
+            </div>
+        </div>
+        <div class="section">
+            <div class="section-header">모차르트</div>
+            <div class="card-list">
+                <div class="card-item" onclick="openAria('hai-gia')">
+                    <div class="card-icon" style="background:#FFE5E5;">🎼</div>
                     <div class="card-content">
-                        <div class="card-title">Erich Wolfgang Korngold</div>
-                        <div class="card-subtitle">1897 – 1957</div>
+                        <div class="card-title">Hai già vinta la causa... Vedrò mentr'io sospiro</div>
+                        <div class="card-subtitle">피가로의 결혼</div>
                     </div>
-                    <div class="card-right">
-                        <span class="card-badge">1</span>
-                        <span class="card-chevron">›</span>
+                    <div class="card-chevron">›</div>
+                </div>
+                <div class="card-item" onclick="openAria('aprite')">
+                    <div class="card-icon" style="background:#FFE5E5;">🎼</div>
+                    <div class="card-content">
+                        <div class="card-title">Aprite un po' quegli occhi</div>
+                        <div class="card-subtitle">피가로의 결혼</div>
                     </div>
+                    <div class="card-chevron">›</div>
+                </div>
+                <div class="card-item" onclick="openAria('rivolgete')">
+                    <div class="card-icon" style="background:#FFE5E5;">🎼</div>
+                    <div class="card-content">
+                        <div class="card-title">Rivolgete a lui lo sguardo</div>
+                        <div class="card-subtitle">코지 판 투테</div>
+                    </div>
+                    <div class="card-chevron">›</div>
+                </div>
+            </div>
+        </div>
+        <div class="section">
+            <div class="section-header">레온카발로</div>
+            <div class="card-list">
+                <div class="card-item" onclick="openAria('si-puo')">
+                    <div class="card-icon" style="background:#E5FFE9;">🎪</div>
+                    <div class="card-content">
+                        <div class="card-title">Si può? (프롤로그)</div>
+                        <div class="card-subtitle">팔리아치</div>
+                    </div>
+                    <div class="card-chevron">›</div>
+                </div>
+            </div>
+        </div>
+        <div class="section">
+            <div class="section-header">조르다노</div>
+            <div class="card-list">
+                <div class="card-item" onclick="openAria('nemico')">
+                    <div class="card-icon" style="background:#FFF5E5;">🎵</div>
+                    <div class="card-content">
+                        <div class="card-title">Nemico della patria</div>
+                        <div class="card-subtitle">안드레아 셰니에</div>
+                    </div>
+                    <div class="card-chevron">›</div>
+                </div>
+            </div>
+        </div>
+        <div class="section">
+            <div class="section-header">바그너</div>
+            <div class="card-list">
+                <div class="card-item" onclick="openAria('abendstern')">
+                    <div class="card-icon" style="background:#F0E5FF;">🌟</div>
+                    <div class="card-content">
+                        <div class="card-title">O du mein holder Abendstern</div>
+                        <div class="card-subtitle">탄호이저</div>
+                    </div>
+                    <div class="card-chevron">›</div>
+                </div>
+                <div class="card-item" onclick="openAria('sehnen')">
+                    <div class="card-icon" style="background:#F0E5FF;">🌟</div>
+                    <div class="card-content">
+                        <div class="card-title">Mein Sehnen, mein Wähnen</div>
+                        <div class="card-subtitle">뉘른베르크의 명가수</div>
+                    </div>
+                    <div class="card-chevron">›</div>
+                </div>
+            </div>
+        </div>
+        <div class="section">
+            <div class="section-header">로시니</div>
+            <div class="card-list">
+                <div class="card-item" onclick="openAria('largo')">
+                    <div class="card-icon" style="background:#E5FFFE;">🎭</div>
+                    <div class="card-content">
+                        <div class="card-title">Largo al factotum della città</div>
+                        <div class="card-subtitle">세비야의 이발사</div>
+                    </div>
+                    <div class="card-chevron">›</div>
+                </div>
+            </div>
+        </div>
+        <div class="section">
+            <div class="section-header">구노</div>
+            <div class="card-list">
+                <div class="card-item" onclick="openAria('avant')">
+                    <div class="card-icon" style="background:#FFE5F5;">🎵</div>
+                    <div class="card-content">
+                        <div class="card-title">Avant de quitter ces lieux</div>
+                        <div class="card-subtitle">파우스트</div>
+                    </div>
+                    <div class="card-chevron">›</div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
-    <!-- 전체 목록 -->
-    <div id="tab-all" style="display:none">
-        <div class="section">
-            <div class="section-label">전체 16곡</div>
-            <div class="card-list" id="all-list"></div>
+<div id="aria-page" class="page">
+    <div class="nav-bar">
+        <button class="nav-back" onclick="goBack()">‹ 목록</button>
+        <div class="nav-title" id="nav-aria-title"></div>
+        <div style="width:60px"></div>
+    </div>
+    <div class="detail-header">
+        <div class="detail-opera" id="detail-opera"></div>
+        <div class="detail-title" id="detail-title"></div>
+        <div class="detail-composer" id="detail-composer"></div>
+    </div>
+    <div class="segment-wrap">
+        <div class="segment-control">
+            <button class="segment-btn active" onclick="switchTab('lyrics', this)">원문 가사</button>
+            <button class="segment-btn" onclick="switchTab('vocab', this)">단어 분석</button>
+            <button class="segment-btn" onclick="switchTab('translation', this)">번역</button>
         </div>
     </div>
-</div>
-
-<!-- ── 화면 2: 작곡가별 곡 목록 ── -->
-<div id="screen-composer" class="screen">
-    <div class="nav-bar">
-        <button class="nav-back" onclick="goTo('main')">‹ 뒤로</button>
-        <span class="nav-title" id="comp-nav-title"></span>
-        <span style="width:60px"></span>
-    </div>
-    <div class="composer-header">
-        <div class="composer-title" id="comp-title"></div>
-        <div class="composer-sub" id="comp-sub"></div>
-    </div>
-    <div class="section">
-        <div class="card-list" id="comp-list"></div>
-    </div>
-</div>
-
-<!-- ── 화면 3: 곡 상세 ── -->
-<div id="screen-detail" class="screen pb40">
-    <div class="nav-bar">
-        <button class="nav-back" id="detail-back" onclick="goBackFromDetail()">‹ 뒤로</button>
-        <span class="nav-title">곡 상세</span>
-        <span style="width:60px"></span>
-    </div>
-    <div id="detail-content"></div>
+    <div id="tab-lyrics" class="tab-content active"></div>
+    <div id="tab-vocab" class="tab-content"></div>
+    <div id="tab-translation" class="tab-content"></div>
 </div>
 
 <script>
-// ────────────────────────────────────────────
-// 곡 데이터
-// ────────────────────────────────────────────
-const songs = [
-    {
-        id: 1,
-        title: "Eri tu",
-        opera: "Un ballo in maschera",
-        composer: "verdi",
-        composerName: "Giuseppe Verdi",
-        language: "이탈리아어",
-        voiceType: "바리톤",
-        lyrics: [
-            {
-                original: "Eri tu che macchiavi quell'anima,",
-                ipa: "[ˈɛːri tu ke mˈakkjavi kwelˈlanima]",
-                translation: "그것은 너였다, 그 영혼을 더럽힌 것은,"
-            },
-            {
-                original: "la delizia dell'anima mia,",
-                ipa: "[la deˈlittsja delˈlanima ˈmiːa]",
-                translation: "내 영혼의 기쁨이었던,"
-            },
-            {
-                original: "che m'affidi e d'un tratto esecrabile",
-                ipa: "[ke mafˈfiːdi e dun ˈtratto ezeˈkrabile]",
-                translation: "나를 믿게 하고는 한순간에 저주스럽게도"
-            },
-            {
-                original: "l'universo avvelenavi per me!",
-                ipa: "[luniˈvɛrso avveleˈnaːvi per me]",
-                translation: "나를 위한 온 세상을 독으로 물들였다!"
-            }
-        ],
-        words: [
-            { word: "macchiavi", ipa: "[mˈakkjavi]", meaning: "더럽혔다", type: "동사 2인칭 단수 반과거" },
-            { word: "anima", ipa: "[ˈanima]", meaning: "영혼", type: "명사 (여성형)" },
-            { word: "delizia", ipa: "[deˈlittsja]", meaning: "기쁨, 환희", type: "명사 (여성형)" },
-            { word: "esecrabile", ipa: "[ezeˈkrabile]", meaning: "저주스러운, 혐오스러운", type: "형용사" },
-            { word: "universo", ipa: "[uniˈvɛrso]", meaning: "우주, 온 세상", type: "명사 (남성형)" },
-            { word: "avvelenavi", ipa: "[avveleˈnaːvi]", meaning: "독을 넣었다", type: "동사 2인칭 단수 반과거" }
-        ],
-        literal: "그것은 너였다, 그 영혼을 더럽힌 것은, 내 영혼의 기쁨이었던, 나를 믿게 하고는 한순간에 저주스럽게도 나를 위한 온 세상을 독으로 물들였다!",
-        liberal: "네가 그랬구나. 내 삶의 기쁨이었던 그녀의 영혼을 더럽힌 것이. 나를 믿게 해놓고는 단숨에 내 온 세상을 독으로 물들여버렸구나!"
-    },
-    {
-        id: 2,
-        title: "Il balen del suo sorriso",
-        opera: "Il trovatore",
-        composer: "verdi",
-        composerName: "Giuseppe Verdi",
-        language: "이탈리아어",
-        voiceType: "바리톤",
-        lyrics: [
-            {
-                original: "Il balen del suo sorriso",
-                ipa: "[il baˈlɛn del suo sorˈriːzo]",
-                translation: "그녀의 미소의 빛남은"
-            },
-            {
-                original: "d'una stella vince il raggio;",
-                ipa: "[ˈduːna ˈstɛlla ˈvintʃe il ˈraddʒo]",
-                translation: "별빛도 능가한다;"
-            },
-            {
-                original: "il fulgor del suo bel viso",
-                ipa: "[il fulˈɡor del suo bɛl ˈviːzo]",
-                translation: "그녀의 아름다운 얼굴의 광채는"
-            },
-            {
-                original: "nova luce al dì dà raggio.",
-                ipa: "[ˈnɔːva ˈluːtʃe al di da ˈraddʒo]",
-                translation: "낮에 새로운 빛을 더한다."
-            }
-        ],
-        words: [
-            { word: "balen", ipa: "[baˈlɛn]", meaning: "번쩍임, 빛남", type: "명사 (남성형, 고어)" },
-            { word: "sorriso", ipa: "[sorˈriːzo]", meaning: "미소", type: "명사 (남성형)" },
-            { word: "stella", ipa: "[ˈstɛlla]", meaning: "별", type: "명사 (여성형)" },
-            { word: "raggio", ipa: "[ˈraddʒo]", meaning: "빛, 광선", type: "명사 (남성형)" },
-            { word: "fulgor", ipa: "[fulˈɡor]", meaning: "광채, 빛남", type: "명사 (남성형, 시어)" },
-            { word: "nova", ipa: "[ˈnɔːva]", meaning: "새로운", type: "형용사 (여성형, 고어)" }
-        ],
-        literal: "그녀의 미소의 빛남은 별빛도 능가한다; 그녀의 아름다운 얼굴의 광채는 낮에 새로운 빛을 더한다.",
-        liberal: "그녀의 미소는 별빛보다 더 밝게 빛나고, 그 아름다운 얼굴의 광채는 대낮에도 새로운 빛을 더해준다."
-    },
-    {
-        id: 3,
-        title: "Cortigiani, vil razza dannata",
-        opera: "Rigoletto",
-        composer: "verdi",
-        composerName: "Giuseppe Verdi",
-        language: "이탈리아어",
-        voiceType: "바리톤",
-        lyrics: [
-            {
-                original: "Cortigiani, vil razza dannata,",
-                ipa: "[kortiˈdʒaːni vil ˈrattsa danˈnaːta]",
-                translation: "궁정 신하들아, 저주받은 비열한 족속들아,"
-            },
-            {
-                original: "per qual prezzo vendeste il mio bene!",
-                ipa: "[per kwal ˈprɛttso venˈdɛste il mio ˈbɛːne]",
-                translation: "무슨 대가를 받고 내 소중한 것을 팔았느냐!"
-            },
-            {
-                original: "A voi nulla per l'oro sconviene!",
-                ipa: "[a voi ˈnulla per ˈlɔːro skonˈvjɛːne]",
-                translation: "너희에게는 돈을 위해 못 할 짓이 없구나!"
-            },
-            {
-                original: "Ma mia figlia è impagabil tesor.",
-                ipa: "[ma ˈmiːa ˈfiʎʎa ɛ impaˈɡaːbil teˈzor]",
-                translation: "하지만 내 딸은 값을 매길 수 없는 보물이다."
-            }
-        ],
-        words: [
-            { word: "Cortigiani", ipa: "[kortiˈdʒaːni]", meaning: "궁정 신하들", type: "명사 복수 (남성형)" },
-            { word: "vil", ipa: "[vil]", meaning: "비열한, 천박한", type: "형용사" },
-            { word: "razza", ipa: "[ˈrattsa]", meaning: "족속, 무리", type: "명사 (여성형)" },
-            { word: "dannata", ipa: "[danˈnaːta]", meaning: "저주받은", type: "형용사 (여성형)" },
-            { word: "prezzo", ipa: "[ˈprɛttso]", meaning: "값, 대가", type: "명사 (남성형)" },
-            { word: "vendeste", ipa: "[venˈdɛste]", meaning: "팔았다", type: "동사 2인칭 복수 과거" },
-            { word: "oro", ipa: "[ˈɔːro]", meaning: "금, 돈", type: "명사 (남성형)" },
-            { word: "impagabil", ipa: "[impaˈɡaːbil]", meaning: "값을 매길 수 없는", type: "형용사" },
-            { word: "tesor", ipa: "[teˈzor]", meaning: "보물, 보배", type: "명사 (남성형, 시어)" }
-        ],
-        literal: "궁정 신하들아, 저주받은 비열한 족속들아, 무슨 대가를 받고 내 소중한 것을 팔았느냐! 너희에게는 돈을 위해 못 할 짓이 없구나! 하지만 내 딸은 값을 매길 수 없는 보물이다.",
-        liberal: "이 비열하고 저주받은 신하 놈들! 도대체 얼마를 받고 내 딸을 팔아넘긴 것이냐! 돈이라면 무슨 짓이든 하는 자들! 하지만 내 딸은 세상 어떤 돈으로도 살 수 없는 보물이다!"
-    },
-    {
-        id: 4,
-        title: "Di Provenza il mar",
-        opera: "La traviata",
-        composer: "verdi",
-        composerName: "Giuseppe Verdi",
-        language: "이탈리아어",
-        voiceType: "바리톤",
-        lyrics: [
-            {
-                original: "Di Provenza il mar, il suol",
-                ipa: "[di proˈvɛntsa il mar il ˈswɔl]",
-                translation: "프로방스의 바다와 땅을"
-            },
-            {
-                original: "chi dal cor ti cancellò?",
-                ipa: "[ki dal kor ti kantʃelˈlɔ]",
-                translation: "누가 네 마음에서 지워버렸느냐?"
-            },
-            {
-                original: "Al natio fulgente sol",
-                ipa: "[al ˈnaːtjo fulˈdʒɛnte sol]",
-                translation: "고향의 빛나는 태양으로"
-            },
-            {
-                original: "qual destino ti furò?",
-                ipa: "[kwal desˈtiːno ti fuˈrɔ]",
-                translation: "어떤 운명이 너를 빼앗아갔느냐?"
-            }
-        ],
-        words: [
-            { word: "Provenza", ipa: "[proˈvɛntsa]", meaning: "프로방스 (지명)", type: "고유명사" },
-            { word: "suol", ipa: "[ˈswɔl]", meaning: "땅, 토지", type: "명사 (남성형, 시어)" },
-            { word: "cancellò", ipa: "[kantʃelˈlɔ]", meaning: "지워버렸다", type: "동사 3인칭 단수 과거" },
-            { word: "natio", ipa: "[ˈnaːtjo]", meaning: "고향의, 태어난", type: "형용사" },
-            { word: "fulgente", ipa: "[fulˈdʒɛnte]", meaning: "빛나는", type: "형용사" },
-            { word: "furò", ipa: "[fuˈrɔ]", meaning: "빼앗아갔다", type: "동사 3인칭 단수 과거" }
-        ],
-        literal: "프로방스의 바다와 땅을 누가 네 마음에서 지워버렸느냐? 고향의 빛나는 태양으로부터 어떤 운명이 너를 빼앗아갔느냐?",
-        liberal: "프로방스의 바다와 고향 땅을 네 마음에서 지워버린 것이 누구냐? 그 빛나는 고향의 태양 아래서 어떤 운명이 너를 이렇게 멀리 데려간 것이냐?"
-    },
-    {
-        id: 5,
-        title: "Per me giunto",
-        opera: "Don Carlos",
-        composer: "verdi",
-        composerName: "Giuseppe Verdi",
-        language: "이탈리아어",
-        voiceType: "바리톤",
-        lyrics: [
-            {
-                original: "Per me giunto è il dì supremo,",
-                ipa: "[per me ˈdʒunto ɛ il di suˈprɛːmo]",
-                translation: "나에게 최후의 날이 왔다,"
-            },
-            {
-                original: "no, mai più ci rivedremo;",
-                ipa: "[no mai pju tʃi riveˈdrɛːmo]",
-                translation: "아니, 우리는 다시 만나지 못하리;"
-            },
-            {
-                original: "io morrò, ma lieto in core,",
-                ipa: "[io morˈrɔ ma ˈljɛːto in ˈkɔːre]",
-                translation: "나는 죽겠지만, 마음은 기쁘다,"
-            },
-            {
-                original: "che potei così servirti.",
-                ipa: "[ke poˈtɛːi koˈzi serˈvirti]",
-                translation: "이렇게 너를 섬길 수 있었으니."
-            }
-        ],
-        words: [
-            { word: "giunto", ipa: "[ˈdʒunto]", meaning: "도달한, 온", type: "형용사/과거분사" },
-            { word: "supremo", ipa: "[suˈprɛːmo]", meaning: "최후의, 최고의", type: "형용사" },
-            { word: "rivedremo", ipa: "[riveˈdrɛːmo]", meaning: "다시 만날 것이다", type: "동사 1인칭 복수 미래" },
-            { word: "lieto", ipa: "[ˈljɛːto]", meaning: "기쁜, 즐거운", type: "형용사" },
-            { word: "core", ipa: "[ˈkɔːre]", meaning: "마음, 심장", type: "명사 (남성형, 시어)" },
-            { word: "servirti", ipa: "[serˈvirti]", meaning: "너를 섬기다", type: "동사 원형 + 대명사" }
-        ],
-        literal: "나에게 최후의 날이 왔다, 아니, 우리는 다시 만나지 못하리; 나는 죽겠지만, 마음은 기쁘다, 이렇게 너를 섬길 수 있었으니.",
-        liberal: "내 마지막 날이 왔구나. 우리는 이제 다시 만나지 못하리. 나는 죽겠지만 기쁜 마음으로 간다. 이렇게 그대를 위해 목숨을 바칠 수 있었으니."
-    },
-    {
-        id: 6,
-        title: "Io morrò",
-        opera: "Don Carlo",
-        composer: "verdi",
-        composerName: "Giuseppe Verdi",
-        language: "이탈리아어",
-        voiceType: "바리톤",
-        lyrics: [
-            {
-                original: "Io morrò, ma lieto in core,",
-                ipa: "[io morˈrɔ ma ˈljɛːto in ˈkɔːre]",
-                translation: "나는 죽겠지만, 마음은 기쁘다,"
-            },
-            {
-                original: "perché il ciel mi dà tal sorte.",
-                ipa: "[perˈke il tʃɛl mi da tal ˈsɔrte]",
-                translation: "하늘이 나에게 이런 운명을 주었으니."
-            },
-            {
-                original: "Ah! più bella e più felice",
-                ipa: "[a pju ˈbɛlla e pju feˈliːtʃe]",
-                translation: "아! 더 아름답고 더 행복하게"
-            },
-            {
-                original: "spero in ciel rivederti.",
-                ipa: "[ˈspɛːro in tʃɛl riveˈdɛrti]",
-                translation: "하늘에서 다시 만나기를 바란다."
-            }
-        ],
-        words: [
-            { word: "morrò", ipa: "[morˈrɔ]", meaning: "나는 죽을 것이다", type: "동사 1인칭 단수 미래" },
-            { word: "lieto", ipa: "[ˈljɛːto]", meaning: "기쁜", type: "형용사" },
-            { word: "ciel", ipa: "[tʃɛl]", meaning: "하늘", type: "명사 (남성형, 시어)" },
-            { word: "sorte", ipa: "[ˈsɔrte]", meaning: "운명, 팔자", type: "명사 (여성형)" },
-            { word: "felice", ipa: "[feˈliːtʃe]", meaning: "행복한", type: "형용사" },
-            { word: "rivederti", ipa: "[riveˈdɛrti]", meaning: "너를 다시 보다", type: "동사 원형 + 대명사" }
-        ],
-        literal: "나는 죽겠지만, 마음은 기쁘다, 하늘이 나에게 이런 운명을 주었으니. 아! 더 아름답고 더 행복하게 하늘에서 다시 만나기를 바란다.",
-        liberal: "나는 죽겠지만 기쁜 마음이다. 하늘이 내게 이런 운명을 주셨으니. 아! 저 하늘에서 더 아름답고 행복하게 다시 만날 수 있기를 바란다."
-    },
-    {
-        id: 7,
-        title: "Pietà rispetto onore",
-        opera: "Macbeth",
-        composer: "verdi",
-        composerName: "Giuseppe Verdi",
-        language: "이탈리아어",
-        voiceType: "바리톤",
-        lyrics: [
-            {
-                original: "Pietà, rispetto, amore,",
-                ipa: "[pjeˈta risˈpɛtto aˈmoːre]",
-                translation: "연민, 존경, 사랑,"
-            },
-            {
-                original: "conforto ai dì cadenti,",
-                ipa: "[konˈfɔrto ai di kaˈdɛnti]",
-                translation: "쇠락하는 날들의 위안,"
-            },
-            {
-                original: "non spargeran di fiori",
-                ipa: "[non sparˈdʒɛran di ˈfjɔːri]",
-                translation: "꽃을 뿌려주지 않으리"
-            },
-            {
-                original: "la tua canuta età.",
-                ipa: "[la ˈtuːa kaˈnuːta eˈta]",
-                translation: "너의 백발의 노년에."
-            }
-        ],
-        words: [
-            { word: "pietà", ipa: "[pjeˈta]", meaning: "연민, 자비", type: "명사 (여성형)" },
-            { word: "rispetto", ipa: "[risˈpɛtto]", meaning: "존경, 경의", type: "명사 (남성형)" },
-            { word: "conforto", ipa: "[konˈfɔrto]", meaning: "위안, 위로", type: "명사 (남성형)" },
-            { word: "cadenti", ipa: "[kaˈdɛnti]", meaning: "쇠락하는, 기우는", type: "형용사 복수" },
-            { word: "spargeran", ipa: "[sparˈdʒɛran]", meaning: "뿌릴 것이다", type: "동사 3인칭 복수 미래 (단축형)" },
-            { word: "canuta", ipa: "[kaˈnuːta]", meaning: "백발의", type: "형용사 (여성형)" }
-        ],
-        literal: "연민, 존경, 사랑, 쇠락하는 날들의 위안, 꽃을 뿌려주지 않으리 너의 백발의 노년에.",
-        liberal: "연민도, 존경도, 사랑도, 그 어떤 위안도 네 쇠락하는 노년에 꽃을 뿌려주지 않으리라."
-    },
-    {
-        id: 8,
-        title: "Hai già vinta la causa",
-        opera: "Le nozze di Figaro",
-        composer: "mozart",
-        composerName: "Wolfgang Amadeus Mozart",
-        language: "이탈리아어",
-        voiceType: "바리톤",
-        lyrics: [
-            {
-                original: "Hai già vinta la causa!",
-                ipa: "[ai ˈdʒa ˈvinta la ˈkauza]",
-                translation: "이미 소송에서 이겼다고!"
-            },
-            {
-                original: "Cosa sento! In qual laccio cadeva?",
-                ipa: "[ˈkɔːza ˈsɛnto in kwal ˈlattʃo kaˈdeːva]",
-                translation: "이게 무슨 소리! 어떤 함정에 빠졌단 말인가?"
-            },
-            {
-                original: "Perfidi! Io voglio di tal modo punirvi.",
-                ipa: "[ˈpɛrfidi io ˈvɔʎʎo di tal ˈmɔːdo puˈniːrvi]",
-                translation: "배신자들! 나는 이런 방식으로 너희를 벌하겠다."
-            }
-        ],
-        words: [
-            { word: "vinta", ipa: "[ˈvinta]", meaning: "이긴", type: "형용사/과거분사 (여성형)" },
-            { word: "causa", ipa: "[ˈkauza]", meaning: "소송, 원인", type: "명사 (여성형)" },
-            { word: "laccio", ipa: "[ˈlattʃo]", meaning: "함정, 올가미", type: "명사 (남성형)" },
-            { word: "perfidi", ipa: "[ˈpɛrfidi]", meaning: "배신자들", type: "명사/형용사 복수" },
-            { word: "punirvi", ipa: "[puˈniːrvi]", meaning: "너희를 벌하다", type: "동사 원형 + 대명사" }
-        ],
-        literal: "이미 소송에서 이겼다고! 이게 무슨 소리! 어떤 함정에 빠졌단 말인가? 배신자들! 나는 이런 방식으로 너희를 벌하겠다.",
-        liberal: "소송에서 이미 이겼다고? 이게 무슨 말이냐! 내가 어떤 함정에 빠진 것이냐? 이 배신자들! 내가 반드시 너희에게 대가를 치르게 하겠다."
-    },
-    {
-        id: 9,
-        title: "Aprite un po' quegli occhi",
-        opera: "Le nozze di Figaro",
-        composer: "mozart",
-        composerName: "Wolfgang Amadeus Mozart",
-        language: "이탈리아어",
-        voiceType: "바리톤",
-        lyrics: [
-            {
-                original: "Aprite un po' quegli occhi,",
-                ipa: "[aˈpriːte un po ˈkweʎʎi ˈɔkkji]",
-                translation: "그 눈을 조금 뜨시오,"
-            },
-            {
-                original: "uomini incauti e sciocchi,",
-                ipa: "[ˈwɔːmini inˈkauti e ˈʃɔkki]",
-                translation: "경솔하고 어리석은 남자들이여,"
-            },
-            {
-                original: "guardate queste femmine,",
-                ipa: "[ɡwarˈdaːte ˈkwɛste ˈfɛmmine]",
-                translation: "이 여자들을 보시오,"
-            },
-            {
-                original: "guardate cosa son!",
-                ipa: "[ɡwarˈdaːte ˈkɔːza son]",
-                translation: "그들이 무엇인지 보시오!"
-            }
-        ],
-        words: [
-            { word: "aprite", ipa: "[aˈpriːte]", meaning: "여시오, 뜨시오", type: "동사 명령형 2인칭 복수" },
-            { word: "incauti", ipa: "[inˈkauti]", meaning: "경솔한", type: "형용사 복수" },
-            { word: "sciocchi", ipa: "[ˈʃɔkki]", meaning: "어리석은", type: "형용사 복수" },
-            { word: "femmine", ipa: "[ˈfɛmmine]", meaning: "여자들", type: "명사 복수 (여성형)" },
-            { word: "guardate", ipa: "[ɡwarˈdaːte]", meaning: "보시오", type: "동사 명령형 2인칭 복수" }
-        ],
-        literal: "그 눈을 조금 뜨시오, 경솔하고 어리석은 남자들이여, 이 여자들을 보시오, 그들이 무엇인지 보시오!",
-        liberal: "눈을 좀 뜨고 보시오, 이 경솔하고 어리석은 남자들이여! 이 여자들의 실체를 똑바로 보란 말이오!"
-    },
-    {
-        id: 10,
-        title: "Rivolgete a lui lo sguardo",
-        opera: "Così fan tutte",
-        composer: "mozart",
-        composerName: "Wolfgang Amadeus Mozart",
-        language: "이탈리아어",
-        voiceType: "베이스",
-        lyrics: [
-            {
-                original: "Rivolgete a lui lo sguardo,",
-                ipa: "[rivolˈdʒɛːte a lui lo ˈzɡwardo]",
-                translation: "그에게 시선을 돌려보세요,"
-            },
-            {
-                original: "e vedrete come sta:",
-                ipa: "[e veˈdrɛːte ˈkɔːme sta]",
-                translation: "그리고 그가 어떤지 보세요:"
-            },
-            {
-                original: "tutto dice: io gelo, io ardo,",
-                ipa: "[ˈtutto ˈdiːtʃe io ˈdʒɛːlo io ˈardo]",
-                translation: "모든 것이 말하고 있어요: 나는 얼어붙고, 나는 타오른다,"
-            },
-            {
-                original: "tutto dice: pietà, pietà!",
-                ipa: "[ˈtutto ˈdiːtʃe pjeˈta pjeˈta]",
-                translation: "모든 것이 말하고 있어요: 자비를, 자비를!"
-            }
-        ],
-        words: [
-            { word: "rivolgete", ipa: "[rivolˈdʒɛːte]", meaning: "돌리세요", type: "동사 명령형 2인칭 복수" },
-            { word: "sguardo", ipa: "[ˈzɡwardo]", meaning: "시선, 눈길", type: "명사 (남성형)" },
-            { word: "gelo", ipa: "[ˈdʒɛːlo]", meaning: "얼어붙다", type: "동사 1인칭 단수 현재" },
-            { word: "ardo", ipa: "[ˈardo]", meaning: "타오르다", type: "동사 1인칭 단수 현재" },
-            { word: "pietà", ipa: "[pjeˈta]", meaning: "자비, 연민", type: "명사 (여성형)" }
-        ],
-        literal: "그에게 시선을 돌려보세요, 그리고 그가 어떤지 보세요: 모든 것이 말하고 있어요: 나는 얼어붙고, 나는 타오른다, 모든 것이 말하고 있어요: 자비를, 자비를!",
-        liberal: "그를 한번 바라보세요, 그의 상태가 어떤지. 온몸이 말하고 있잖아요: 얼어붙는 듯, 타오르는 듯, 제발 자비를 베풀어달라고!"
-    },
-    {
-        id: 11,
-        title: "Nemico della patria",
-        opera: "Andrea Chénier",
-        composer: "giordano",
-        composerName: "Umberto Giordano",
-        language: "이탈리아어",
-        voiceType: "바리톤",
-        lyrics: [
-            {
-                original: "Nemico della patria?!",
-                ipa: "[ˈnɛːmiko ˈdɛlla ˈpaːtrja]",
-                translation: "조국의 적?!"
-            },
-            {
-                original: "È vecchia fiaba... Un dì",
-                ipa: "[ɛ ˈvɛkkja ˈfjaːba un di]",
-                translation: "그것은 낡은 이야기... 어느 날"
-            },
-            {
-                original: "m'era dolce la vita,",
-                ipa: "[ˈmɛːra ˈdoltʃe la ˈviːta]",
-                translation: "삶이 나에게 달콤했었다,"
-            },
-            {
-                original: "or son perduto ed essa per me è morta!",
-                ipa: "[or son perˈduːto ed ˈɛssa per me ɛ ˈmɔrta]",
-                translation: "이제 나는 길을 잃었고 그것은 나에게 죽었다!"
-            }
-        ],
-        words: [
-            { word: "nemico", ipa: "[ˈnɛːmiko]", meaning: "적, 원수", type: "명사 (남성형)" },
-            { word: "patria", ipa: "[ˈpaːtrja]", meaning: "조국, 고국", type: "명사 (여성형)" },
-            { word: "fiaba", ipa: "[ˈfjaːba]", meaning: "동화, 이야기", type: "명사 (여성형)" },
-            { word: "dolce", ipa: "[ˈdoltʃe]", meaning: "달콤한", type: "형용사" },
-            { word: "perduto", ipa: "[perˈduːto]", meaning: "잃어버린, 길 잃은", type: "형용사/과거분사" }
-        ],
-        literal: "조국의 적?! 그것은 낡은 이야기... 어느 날 삶이 나에게 달콤했었다, 이제 나는 길을 잃었고 그것은 나에게 죽었다!",
-        liberal: "조국의 적이라고?! 그건 낡아빠진 말이다... 한때 삶은 내게 달콤했다. 하지만 이제 나는 모든 것을 잃었고, 그 삶은 내게 죽어버렸다!"
-    },
-    {
-        id: 12,
-        title: "Si può?",
-        opera: "Pagliacci",
-        composer: "leoncavallo",
-        composerName: "Ruggero Leoncavallo",
-        language: "이탈리아어",
-        voiceType: "바리톤",
-        lyrics: [
-            {
-                original: "Si può? Si può?",
-                ipa: "[si ˈpwɔ si ˈpwɔ]",
-                translation: "실례해도 될까요? 실례해도 될까요?"
-            },
-            {
-                original: "Signore! Signori!",
-                ipa: "[siɲˈɲoːre siɲˈɲoːri]",
-                translation: "신사 여러분! 숙녀 여러분!"
-            },
-            {
-                original: "Incominciate!",
-                ipa: "[inkominˈtʃaːte]",
-                translation: "시작하겠습니다!"
-            },
-            {
-                original: "L'autore ha cercato invece pingervi",
-                ipa: "[lauˈtoːre a tʃerˈkaːto inˈvɛtʃe ˈpindʒervi]",
-                translation: "작가는 대신 여러분을 그려내려 했습니다"
-            }
-        ],
-        words: [
-            { word: "si può", ipa: "[si ˈpwɔ]", meaning: "해도 될까요?", type: "관용 표현" },
-            { word: "signore", ipa: "[siɲˈɲoːre]", meaning: "신사, 선생님", type: "명사 (남성형)" },
-            { word: "incominciate", ipa: "[inkominˈtʃaːte]", meaning: "시작하세요", type: "동사 명령형 2인칭 복수" },
-            { word: "autore", ipa: "[auˈtoːre]", meaning: "작가, 저자", type: "명사 (남성형)" },
-            { word: "pingervi", ipa: "[ˈpindʒervi]", meaning: "여러분을 그리다", type: "동사 원형 + 대명사" }
-        ],
-        literal: "실례해도 될까요? 실례해도 될까요? 신사 여러분! 숙녀 여러분! 시작하겠습니다! 작가는 대신 여러분을 그려내려 했습니다",
-        liberal: "잠깐 실례해도 될까요? 신사 숙녀 여러분! 지금부터 시작하겠습니다! 작가는 여러분의 모습을 있는 그대로 그려내고자 했습니다."
-    },
-    {
-        id: 13,
-        title: "O du mein holder Abendstern",
-        opera: "Tannhäuser",
-        composer: "wagner",
-        composerName: "Richard Wagner",
-        language: "독일어",
-        voiceType: "바리톤",
-        lyrics: [
-            {
-                original: "O du mein holder Abendstern,",
-                ipa: "[oː duː maɪ̯n ˈhɔldɐ ˈaːbəntʃtɛrn]",
-                translation: "오 나의 사랑스러운 저녁별이여,"
-            },
-            {
-                original: "wohl grüßt' ich immer dich so gern:",
-                ipa: "[voːl ɡryst ɪç ˈɪmɐ dɪç zoː ɡɛrn]",
-                translation: "나는 언제나 기꺼이 너에게 인사했다:"
-            },
-            {
-                original: "vom Herzen, das sie nie verriet,",
-                ipa: "[fɔm ˈhɛrtsən das ziː niː fɛrˈriːt]",
-                translation: "그녀를 결코 배신하지 않은 마음으로부터,"
-            },
-            {
-                original: "grüße sie, wenn sie vorbei dir zieht.",
-                ipa: "[ˈɡryːsə ziː vɛn ziː fɔrˈbaɪ̯ dɪr tsiːt]",
-                translation: "그녀가 네 곁을 지나갈 때 그녀에게 인사해다오."
-            }
-        ],
-        words: [
-            { word: "holder", ipa: "[ˈhɔldɐ]", meaning: "사랑스러운, 아름다운", type: "형용사" },
-            { word: "Abendstern", ipa: "[ˈaːbəntʃtɛrn]", meaning: "저녁별 (금성)", type: "명사 (남성형)" },
-            { word: "grüßen", ipa: "[ˈɡryːsən]", meaning: "인사하다", type: "동사 원형" },
-            { word: "Herzen", ipa: "[ˈhɛrtsən]", meaning: "마음, 심장", type: "명사 (중성형, 여격)" },
-            { word: "verriet", ipa: "[fɛrˈriːt]", meaning: "배신했다", type: "동사 3인칭 단수 과거" },
-            { word: "vorbei", ipa: "[fɔrˈbaɪ̯]", meaning: "지나서, 곁을 지나", type: "부사/전치사" }
-        ],
-        literal: "오 나의 사랑스러운 저녁별이여, 나는 언제나 기꺼이 너에게 인사했다: 그녀를 결코 배신하지 않은 마음으로부터, 그녀가 네 곁을 지나갈 때 그녀에게 인사해다오.",
-        liberal: "오 나의 사랑스러운 저녁별이여, 나는 언제나 기꺼이 너를 바라보았다. 그녀를 한 번도 배신한 적 없는 이 마음을 담아, 그녀가 네 곁을 지나갈 때 내 대신 인사를 전해다오."
-    },
-    {
-        id: 14,
-        title: "Largo al factotum",
-        opera: "Il barbiere di Siviglia",
-        composer: "rossini",
-        composerName: "Gioachino Rossini",
-        language: "이탈리아어",
-        voiceType: "바리톤",
-        lyrics: [
-            {
-                original: "Largo al factotum della città!",
-                ipa: "[ˈlarɡo al fakˈtɔːtum ˈdɛlla tʃitˈta]",
-                translation: "도시의 만능 해결사에게 길을 비켜라!"
-            },
-            {
-                original: "Presto a bottega, ché l'alba è già.",
-                ipa: "[ˈprɛsto a botˈteːɡa ke ˈlalba ɛ dʒa]",
-                translation: "어서 가게로, 새벽이 이미 왔으니."
-            },
-            {
-                original: "Ah, che bel vivere, che bel piacere",
-                ipa: "[a ke bɛl ˈviːvere ke bɛl pjaˈtʃɛːre]",
-                translation: "아, 얼마나 좋은 삶, 얼마나 좋은 즐거움"
-            },
-            {
-                original: "per un barbiere di qualità!",
-                ipa: "[per un barˈbjɛːre di kwaliˈta]",
-                translation: "훌륭한 이발사에게는!"
-            }
-        ],
-        words: [
-            { word: "largo", ipa: "[ˈlarɡo]", meaning: "길을 비켜라, 넓은", type: "감탄사/형용사" },
-            { word: "factotum", ipa: "[fakˈtɔːtum]", meaning: "만능 해결사", type: "명사 (라틴어 차용)" },
-            { word: "bottega", ipa: "[botˈteːɡa]", meaning: "가게, 작업장", type: "명사 (여성형)" },
-            { word: "alba", ipa: "[ˈalba]", meaning: "새벽, 여명", type: "명사 (여성형)" },
-            { word: "piacere", ipa: "[pjaˈtʃɛːre]", meaning: "즐거움, 기쁨", type: "명사 (남성형)" },
-            { word: "barbiere", ipa: "[barˈbjɛːre]", meaning: "이발사", type: "명사 (남성형)" }
-        ],
-        literal: "도시의 만능 해결사에게 길을 비켜라! 어서 가게로, 새벽이 이미 왔으니. 아, 얼마나 좋은 삶, 얼마나 좋은 즐거움 훌륭한 이발사에게는!",
-        liberal: "이 도시의 만능 해결사가 나가신다, 길을 비켜라! 어서 가게 문을 열어야지, 벌써 새벽이 왔으니. 아, 이 얼마나 즐거운 삶인가! 실력 있는 이발사로 산다는 것이!"
-    },
-    {
-        id: 15,
-        title: "Avant de quitter ces lieux",
-        opera: "Faust",
-        composer: "gounod",
-        composerName: "Charles Gounod",
-        language: "프랑스어",
-        voiceType: "바리톤",
-        lyrics: [
-            {
-                original: "Avant de quitter ces lieux,",
-                ipa: "[avɑ̃ də kitɛ se ljø]",
-                translation: "이 곳을 떠나기 전에,"
-            },
-            {
-                original: "sol objet de mes amours,",
-                ipa: "[sɔl ɔbʒɛ də mez amuʁ]",
-                translation: "내 사랑의 유일한 대상이여,"
-            },
-            {
-                original: "je veux te bénir en ces lieux,",
-                ipa: "[ʒə vø tə beniʁ ɑ̃ se ljø]",
-                translation: "나는 이 곳에서 너에게 축복을 빌고 싶다,"
-            },
-            {
-                original: "ô Marguerite, sois bénie!",
-                ipa: "[o maʁɡəʁit swa beni]",
-                translation: "오 마르그리트여, 축복받으라!"
-            }
-        ],
-        words: [
-            { word: "avant", ipa: "[avɑ̃]", meaning: "전에, 앞서", type: "전치사/부사" },
-            { word: "quitter", ipa: "[kitɛ]", meaning: "떠나다", type: "동사 원형" },
-            { word: "lieux", ipa: "[ljø]", meaning: "장소, 곳", type: "명사 복수 (남성형)" },
-            { word: "objet", ipa: "[ɔbʒɛ]", meaning: "대상, 물건", type: "명사 (남성형)" },
-            { word: "bénir", ipa: "[beniʁ]", meaning: "축복하다", type: "동사 원형" },
-            { word: "bénie", ipa: "[beni]", meaning: "축복받은", type: "형용사 (여성형)" }
-        ],
-        literal: "이 곳을 떠나기 전에, 내 사랑의 유일한 대상이여, 나는 이 곳에서 너에게 축복을 빌고 싶다, 오 마르그리트여, 축복받으라!",
-        liberal: "이 곳을 떠나기 전에, 내 사랑의 전부인 그대여, 이 자리에서 그대에게 축복을 빌고 싶다. 오 마르그리트여, 부디 행복하여라!"
-    },
-    {
-        id: 16,
-        title: "Mein Sehnen, mein Wähnen",
-        opera: "Die tote Stadt",
-        composer: "korngold",
-        composerName: "Erich Wolfgang Korngold",
-        language: "독일어",
-        voiceType: "테너",
-        lyrics: [
-            {
-                original: "Mein Sehnen, mein Wähnen,",
-                ipa: "[maɪ̯n ˈzeːnən maɪ̯n ˈvɛːnən]",
-                translation: "나의 그리움, 나의 꿈꿈,"
-            },
-            {
-                original: "es träumt sich zurück.",
-                ipa: "[ɛs trɔɪ̯mt zɪç tsuˈrʏk]",
-                translation: "그것은 뒤로 꿈을 꾼다."
-            },
-            {
-                original: "Glück, das mir verblieben,",
-                ipa: "[ɡlʏk das miːr fɛrˈbliːbən]",
-                translation: "나에게 남겨진 행복,"
-            },
-            {
-                original: "du mein einzig Glück!",
-                ipa: "[duː maɪ̯n ˈaɪ̯ntsɪç ɡlʏk]",
-                translation: "너 나의 유일한 행복!"
-            }
-        ],
-        words: [
-            { word: "Sehnen", ipa: "[ˈzeːnən]", meaning: "그리움, 동경", type: "명사 (중성형)" },
-            { word: "Wähnen", ipa: "[ˈvɛːnən]", meaning: "꿈꿈, 망상", type: "명사 (중성형)" },
-            { word: "träumt", ipa: "[trɔɪ̯mt]", meaning: "꿈을 꾼다", type: "동사 3인칭 단수 현재" },
-            { word: "zurück", ipa: "[tsuˈrʏk]", meaning: "뒤로, 돌아서", type: "부사" },
-            { word: "verblieben", ipa: "[fɛrˈbliːbən]", meaning: "남겨진", type: "동사 과거분사" },
-            { word: "einzig", ipa: "[ˈaɪ̯ntsɪç]", meaning: "유일한", type: "형용사" }
-        ],
-        literal: "나의 그리움, 나의 꿈꿈, 그것은 뒤로 꿈을 꾼다. 나에게 남겨진 행복, 너 나의 유일한 행복!",
-        liberal: "나의 그리움, 나의 꿈, 모든 것이 과거로 돌아가는 꿈을 꾼다. 내게 남겨진 행복이여, 너만이 나의 유일한 행복이다!"
-    }
-];
+const ariaData = {
 
-// ────────────────────────────────────────────
-// 작곡가 정보
-// ────────────────────────────────────────────
-const composers = {
-    verdi:       { name: "Giuseppe Verdi",            sub: "7곡 · 이탈리아어", icon: "🎭", bg: "bg-verdi" },
-    mozart:      { name: "Wolfgang Amadeus Mozart",   sub: "3곡 · 이탈리아어", icon: "🎼", bg: "bg-mozart" },
-    giordano:    { name: "Umberto Giordano",           sub: "1곡 · 이탈리아어", icon: "🔥", bg: "bg-giordano" },
-    leoncavallo: { name: "Ruggero Leoncavallo",        sub: "1곡 · 이탈리아어", icon: "🎪", bg: "bg-leoncav" },
-    wagner:      { name: "Richard Wagner",             sub: "1곡 · 독일어",     icon: "⚡", bg: "bg-wagner" },
-    rossini:     { name: "Gioachino Rossini",          sub: "1곡 · 이탈리아어", icon: "🌟", bg: "bg-rossini" },
-    gounod:      { name: "Charles Gounod",             sub: "1곡 · 프랑스어",   icon: "🌿", bg: "bg-gounod" },
-    korngold:    { name: "Erich Wolfgang Korngold",    sub: "1곡 · 독일어",     icon: "🌙", bg: "bg-korngold" }
+  'eri-tu': {
+    title: "Eri tu che macchiavi quell'anima",
+    opera: "가면무도회 (Un ballo in maschera)",
+    composer: "베르디",
+    lyrics: [
+      {
+        line: "Alzati, là tuo figlio",
+        words: [
+          { word: "Alzati", ipa: "[ˈaltsati]", meaning: "일어나라 (alzarsi 명령형)" },
+          { word: "là", ipa: "[la]", meaning: "저기" },
+          { word: "tuo figlio", ipa: "[ˈtuːo ˈfiʎʎo]", meaning: "네 아들을" }
+        ],
+        literal: "일어나라, 저기 네 아들을",
+        free: "일어나라, 저기 네 아들이 있다"
+      },
+      {
+        line: "A te concedo riveder.",
+        words: [
+          { word: "A te", ipa: "[a te]", meaning: "너에게" },
+          { word: "concedo", ipa: "[konˈtʃɛːdo]", meaning: "허락한다" },
+          { word: "riveder", ipa: "[riveˈdɛːr]", meaning: "다시 보는 것을" }
+        ],
+        literal: "너에게 다시 보는 것을 허락한다.",
+        free: "다시 볼 수 있도록 허락하겠다."
+      },
+      {
+        line: "Nell'ombra e nel silenzio, là,",
+        words: [
+          { word: "Nell'ombra", ipa: "[nelˈlombra]", meaning: "어둠 속에서" },
+          { word: "nel silenzio", ipa: "[nel siˈlɛntsjo]", meaning: "침묵 속에서" },
+          { word: "là", ipa: "[la]", meaning: "저기서" }
+        ],
+        literal: "어둠과 침묵 속에서, 저기서,",
+        free: "어둠과 침묵 속 저 곳에서,"
+      },
+      {
+        line: "Il tuo rossore e l'onta mia nascondi.",
+        words: [
+          { word: "Il tuo rossore", ipa: "[il ˈtuːo rosˈsoːre]", meaning: "네 수치심을" },
+          { word: "l'onta mia", ipa: "[ˈlonta ˈmiːa]", meaning: "나의 치욕을" },
+          { word: "nascondi", ipa: "[nasˈkondi]", meaning: "숨겨라" }
+        ],
+        literal: "네 수치심과 나의 치욕을 숨겨라.",
+        free: "네 부끄러움과 나의 치욕을 감추어라."
+      },
+      {
+        line: "Non è su lei, nel suo fragile petto",
+        words: [
+          { word: "Non è su lei", ipa: "[non ɛ su lɛi]", meaning: "그녀에게 있지 않다" },
+          { word: "nel suo fragile petto", ipa: "[nel ˈsuːo ˈfraːdʒile ˈpɛtto]", meaning: "그녀의 연약한 가슴에" }
+        ],
+        literal: "그녀에게 있지 않다, 그녀의 연약한 가슴에",
+        free: "그녀가 아니다, 그 연약한 가슴이 아니라"
+      },
+      {
+        line: "che colpir degg'io.",
+        words: [
+          { word: "che colpir", ipa: "[ke kolˈpiːr]", meaning: "쳐야 할 것이" },
+          { word: "degg'io", ipa: "[ˈdɛddʒo]", meaning: "내가 해야 한다" }
+        ],
+        literal: "내가 쳐야 할 것이.",
+        free: "내가 쳐야 할 대상이."
+      },
+      {
+        line: "Altro, ben altro sangue a terger dèssi l'offesa!...",
+        words: [
+          { word: "Altro", ipa: "[ˈaltro]", meaning: "다른" },
+          { word: "ben altro sangue", ipa: "[bɛn ˈaltro ˈsaŋɡwe]", meaning: "전혀 다른 피가" },
+          { word: "a terger", ipa: "[a ˈtɛrdʒer]", meaning: "씻어내기 위해" },
+          { word: "dèssi", ipa: "[ˈdɛssi]", meaning: "흘려야 한다" },
+          { word: "l'offesa", ipa: "[lofˈfeːza]", meaning: "이 모욕을" }
+        ],
+        literal: "다른, 전혀 다른 피가 이 모욕을 씻어내야 한다!",
+        free: "다른, 전혀 다른 피로 이 치욕을 씻어내야 한다!"
+      },
+      {
+        line: "Il sangue tuo!",
+        words: [
+          { word: "Il sangue", ipa: "[il ˈsaŋɡwe]", meaning: "피" },
+          { word: "tuo", ipa: "[ˈtuːo]", meaning: "네" }
+        ],
+        literal: "바로 네 피로!",
+        free: "바로 네 피로!"
+      },
+      {
+        line: "E lo trarrà il pugnale",
+        words: [
+          { word: "E lo trarrà", ipa: "[e lo trarˈra]", meaning: "그것을 뽑아낼 것이다" },
+          { word: "il pugnale", ipa: "[il puɲˈɲaːle]", meaning: "단검이" }
+        ],
+        literal: "그리고 단검이 그것을 뽑아낼 것이다",
+        free: "단검이 그것을 끌어낼 것이다"
+      },
+      {
+        line: "Dallo sleal tuo core",
+        words: [
+          { word: "Dallo sleal", ipa: "[ˈdallo zleˈal]", meaning: "불충한 것으로부터" },
+          { word: "tuo core", ipa: "[ˈtuːo ˈkɔːre]", meaning: "네 심장에서" }
+        ],
+        literal: "불충한 네 심장에서",
+        free: "배신자인 네 심장에서"
+      },
+      {
+        line: "Delle lagrime mie vendicator!",
+        words: [
+          { word: "Delle lagrime mie", ipa: "[ˈdɛlle ˈlaːɡrime ˈmiːe]", meaning: "나의 눈물의" },
+          { word: "vendicator", ipa: "[vendikаˈtɔːr]", meaning: "복수자" }
+        ],
+        literal: "나의 눈물의 복수자로서!",
+        free: "내 눈물의 복수자가 되어!"
+      },
+      {
+        line: "Eri tu che macchiavi quell'anima,",
+        words: [
+          { word: "Eri tu", ipa: "[ˈɛːri tu]", meaning: "너였구나" },
+          { word: "che macchiavi", ipa: "[ke makˈkjaːvi]", meaning: "더럽혔던 것이" },
+          { word: "quell'anima", ipa: "[kwelˈlaːnima]", meaning: "그 영혼을" }
+        ],
+        literal: "너였구나, 그 영혼을 더럽혔던 것이,",
+        free: "네가 그 영혼을 더럽혔구나,"
+      },
+      {
+        line: "La delizia dell'anima mia;",
+        words: [
+          { word: "La delizia", ipa: "[la deˈlittsja]", meaning: "기쁨, 환희" },
+          { word: "dell'anima mia", ipa: "[delˈlaːnima ˈmiːa]", meaning: "내 영혼의" }
+        ],
+        literal: "내 영혼의 기쁨이었던 그녀를;",
+        free: "내 영혼의 기쁨이었던 그녀를;"
+      },
+      {
+        line: "Che m'affidi e d'un tratto esecrabile",
+        words: [
+          { word: "Che m'affidi", ipa: "[ke mafˈfiːdi]", meaning: "나를 믿게 하고서" },
+          { word: "d'un tratto", ipa: "[dun ˈtratto]", meaning: "단번에" },
+          { word: "esecrabile", ipa: "[ezeˈkraːbile]", meaning: "저주스러운" }
+        ],
+        literal: "나를 믿게 하고서 단번에 저주스럽게도",
+        free: "나의 신뢰를 받고서 단번에 저주스럽게도"
+      },
+      {
+        line: "L'universo avveleni per me!",
+        words: [
+          { word: "L'universo", ipa: "[luniˈvɛrso]", meaning: "온 세상을" },
+          { word: "avveleni", ipa: "[avveˈleːni]", meaning: "독으로 물들였다" },
+          { word: "per me", ipa: "[per me]", meaning: "나에게" }
+        ],
+        literal: "나에게 온 세상을 독으로 물들였다!",
+        free: "내 세상 전체를 독으로 물들여버렸다!"
+      },
+      {
+        line: "Traditor! che compensi in tal guisa",
+        words: [
+          { word: "Traditor", ipa: "[tradiˈtɔːr]", meaning: "배신자여!" },
+          { word: "che compensi", ipa: "[ke komˈpɛnsi]", meaning: "이렇게 보답하느냐" },
+          { word: "in tal guisa", ipa: "[in tal ˈɡwiːza]", meaning: "이런 방식으로" }
+        ],
+        literal: "배신자여! 이런 방식으로 보답하느냐",
+        free: "배신자여! 이것이 네가 보답하는 방식이냐"
+      },
+      {
+        line: "Dell'amico tuo primo la fè!",
+        words: [
+          { word: "Dell'amico tuo primo", ipa: "[dellaˈmiːko ˈtuːo ˈpriːmo]", meaning: "네 첫 번째 친구의" },
+          { word: "la fè", ipa: "[la fɛ]", meaning: "신의를" }
+        ],
+        literal: "네 가장 친한 친구의 신의에!",
+        free: "가장 친한 친구의 믿음에 대한 보답이!"
+      },
+      {
+        line: "O dolcezze perdute! O memorie",
+        words: [
+          { word: "O dolcezze perdute", ipa: "[ɔ dolˈtʃettse perˈduːte]", meaning: "오, 잃어버린 달콤함이여" },
+          { word: "O memorie", ipa: "[ɔ meˈmɔːrje]", meaning: "오, 추억들이여" }
+        ],
+        literal: "오, 잃어버린 달콤함이여! 오, 추억들이여",
+        free: "오, 사라진 달콤한 시간들이여! 오, 추억들이여"
+      },
+      {
+        line: "D'un amplesso che l'essere india!",
+        words: [
+          { word: "D'un amplesso", ipa: "[dun amˈplɛsso]", meaning: "포옹의" },
+          { word: "che l'essere india", ipa: "[ke ˈlɛssere ˈindja]", meaning: "존재를 신성하게 하는" }
+        ],
+        literal: "존재를 신성하게 하는 포옹의 추억이여!",
+        free: "나를 신성하게 만들었던 그 포옹의 추억이여!"
+      },
+      {
+        line: "Quando Amelia sì bella, sì candida",
+        words: [
+          { word: "Quando", ipa: "[ˈkwando]", meaning: "~할 때" },
+          { word: "sì bella", ipa: "[si ˈbɛlla]", meaning: "그토록 아름다운" },
+          { word: "sì candida", ipa: "[si ˈkandida]", meaning: "그토록 순수한" }
+        ],
+        literal: "아멜리아가 그토록 아름답고 순수했을 때",
+        free: "아멜리아가 그토록 아름답고 순수했을 때"
+      },
+      {
+        line: "Sul mio seno brillava d'amor!...",
+        words: [
+          { word: "Sul mio seno", ipa: "[sul ˈmiːo ˈseːno]", meaning: "내 가슴 위에서" },
+          { word: "brillava", ipa: "[brilˈlaːva]", meaning: "빛났다" },
+          { word: "d'amor", ipa: "[daˈmɔːr]", meaning: "사랑으로" }
+        ],
+        literal: "내 가슴 위에서 사랑으로 빛났었지!",
+        free: "내 품 안에서 사랑으로 빛나고 있었지!"
+      },
+      {
+        line: "È finita - non siede che l'odio,",
+        words: [
+          { word: "È finita", ipa: "[ɛ fiˈniːta]", meaning: "끝났다" },
+          { word: "non siede che l'odio", ipa: "[non ˈsjɛːde ke ˈlɔːdjo]", meaning: "증오만이 자리잡고 있다" }
+        ],
+        literal: "끝났다 - 증오만이 자리잡고 있다,",
+        free: "모든 것이 끝났다 - 이제 증오만이 남아있다,"
+      },
+      {
+        line: "E la morte nel vedovo cor!",
+        words: [
+          { word: "E la morte", ipa: "[e la ˈmɔːrte]", meaning: "그리고 죽음이" },
+          { word: "nel vedovo cor", ipa: "[nel ˈvɛːdovo kɔːr]", meaning: "홀로된 마음속에" }
+        ],
+        literal: "그리고 죽음이 홀로된 마음속에!",
+        free: "그리고 죽음만이 이 외로운 가슴속에!"
+      },
+      {
+        line: "O dolcezze perdute, o speranze d'amor!",
+        words: [
+          { word: "O dolcezze perdute", ipa: "[ɔ dolˈtʃettse perˈduːte]", meaning: "오, 잃어버린 달콤함이여" },
+          { word: "o speranze d'amor", ipa: "[ɔ speˈrantse daˈmɔːr]", meaning: "오, 사랑의 희망들이여" }
+        ],
+        literal: "오, 잃어버린 달콤함이여, 오, 사랑의 희망들이여!",
+        free: "오, 사라진 달콤함이여, 오, 사랑의 희망들이여!"
+      },
+    ]
+  },
+
+  'il-balen': {
+    title: "Il balen del suo sorriso",
+    opera: "트로바토레 (Il trovatore)",
+    composer: "베르디",
+    lyrics: [
+      {
+        line: "Tutto è deserto;",
+        words: [
+          { word: "Tutto", ipa: "[ˈtutto]", meaning: "모든 것이" },
+          { word: "è deserto", ipa: "[ɛ deˈzɛrto]", meaning: "황량하다" }
+        ],
+        literal: "모든 것이 황량하다;",
+        free: "모든 것이 텅 비어있다;"
+      },
+      {
+        line: "nè per l'aure ancora",
+        words: [
+          { word: "nè", ipa: "[ne]", meaning: "~도 아니다" },
+          { word: "per l'aure", ipa: "[per ˈlaure]", meaning: "공기 속에" },
+          { word: "ancora", ipa: "[aŋˈkɔːra]", meaning: "아직" }
+        ],
+        literal: "공기 속에 아직도",
+        free: "공기 속에 아직도"
+      },
+      {
+        line: "suona l'usato carme...",
+        words: [
+          { word: "suona", ipa: "[ˈswɔːna]", meaning: "울려퍼지지 않는다" },
+          { word: "l'usato carme", ipa: "[luˈzaːto ˈkarme]", meaning: "익숙한 노래가" }
+        ],
+        literal: "익숙한 노래가 울려퍼지지 않는다...",
+        free: "그 익숙한 노래가 들려오지 않는다..."
+      },
+      {
+        line: "In tempo io giungo.",
+        words: [
+          { word: "In tempo", ipa: "[in ˈtɛmpo]", meaning: "제때에" },
+          { word: "io giungo", ipa: "[jo ˈdʒuŋɡo]", meaning: "내가 도착한다" }
+        ],
+        literal: "제때에 내가 도착한다.",
+        free: "제때에 도착했구나."
+      },
+      {
+        line: "Ardita, e qual furente amore",
+        words: [
+          { word: "Ardita", ipa: "[arˈdiːta]", meaning: "대담하게" },
+          { word: "qual furente amore", ipa: "[kwal fuˈrɛnte aˈmɔːre]", meaning: "격렬한 사랑이" }
+        ],
+        literal: "대담하게, 격렬한 사랑이",
+        free: "대담하게, 격렬한 사랑과"
+      },
+      {
+        line: "ed irritato orgoglio",
+        words: [
+          { word: "ed irritato", ipa: "[ed irriˈtaːto]", meaning: "그리고 자극받은" },
+          { word: "orgoglio", ipa: "[orˈɡɔʎʎo]", meaning: "자존심이" }
+        ],
+        literal: "그리고 자극받은 자존심이",
+        free: "상처받은 자존심이"
+      },
+      {
+        line: "chiesero a me.",
+        words: [
+          { word: "chiesero", ipa: "[ˈkjɛːzero]", meaning: "요구했다" },
+          { word: "a me", ipa: "[a me]", meaning: "나에게" }
+        ],
+        literal: "나에게 요구했다.",
+        free: "나에게 요구한 것이다."
+      },
+      {
+        line: "Spento il rival,",
+        words: [
+          { word: "Spento", ipa: "[ˈspɛnto]", meaning: "사라진, 죽은" },
+          { word: "il rival", ipa: "[il riˈval]", meaning: "경쟁자가" }
+        ],
+        literal: "경쟁자가 사라지면,",
+        free: "경쟁자가 제거되면,"
+      },
+      {
+        line: "caduto ogni ostacol sembrava",
+        words: [
+          { word: "caduto", ipa: "[kaˈduːto]", meaning: "무너진" },
+          { word: "ogni ostacol", ipa: "[ˈɔɲɲi oˈstaːkol]", meaning: "모든 장애물이" },
+          { word: "sembrava", ipa: "[semˈbraːva]", meaning: "보였다" }
+        ],
+        literal: "모든 장애물이 무너진 것처럼 보였다",
+        free: "모든 장애물이 사라진 것처럼 보였다"
+      },
+      {
+        line: "a'miei desiri.",
+        words: [
+          { word: "a'miei desiri", ipa: "[a ˈmjɛi deˈziːri]", meaning: "내 욕망 앞에서" }
+        ],
+        literal: "내 욕망 앞에서.",
+        free: "내 소망 앞에서."
+      },
+      {
+        line: "Novello e più possente",
+        words: [
+          { word: "Novello", ipa: "[noˈvɛllo]", meaning: "새로운" },
+          { word: "e più possente", ipa: "[e pju posˈsɛnte]", meaning: "그리고 더욱 강력한" }
+        ],
+        literal: "새롭고 더욱 강력한",
+        free: "새롭고 더욱 강력한"
+      },
+      {
+        line: "ella ne appresta,",
+        words: [
+          { word: "ella", ipa: "[ˈɛlla]", meaning: "그녀가" },
+          { word: "ne appresta", ipa: "[ne apˈprɛsta]", meaning: "준비한다" }
+        ],
+        literal: "그녀가 준비한다,",
+        free: "그녀가 준비하고 있다,"
+      },
+      {
+        line: "l'altare...",
+        words: [
+          { word: "l'altare", ipa: "[lalˈtaːre]", meaning: "제단을" }
+        ],
+        literal: "제단을...",
+        free: "또 다른 제단을..."
+      },
+      {
+        line: "Ah no! non fia d'altri Leonora!",
+        words: [
+          { word: "Ah no", ipa: "[a nɔ]", meaning: "아 안 된다" },
+          { word: "non fia d'altri", ipa: "[non ˈfiːa ˈdaltri]", meaning: "다른 이의 것이 되지 않으리" },
+          { word: "Leonora", ipa: "[leoˈnɔːra]", meaning: "레오노라" }
+        ],
+        literal: "아 안 된다! 레오노라는 다른 이의 것이 되지 않으리!",
+        free: "아 안 돼! 레오노라는 절대 다른 사람의 것이 될 수 없다!"
+      },
+      {
+        line: "Leonora è mia!",
+        words: [
+          { word: "Leonora è mia", ipa: "[leoˈnɔːra ɛ ˈmiːa]", meaning: "레오노라는 나의 것이다" }
+        ],
+        literal: "레오노라는 나의 것이다!",
+        free: "레오노라는 내 것이다!"
+      },
+      {
+        line: "Il balen del suo sorriso",
+        words: [
+          { word: "Il balen", ipa: "[il baˈlɛn]", meaning: "번쩍임, 빛남" },
+          { word: "del suo sorriso", ipa: "[del ˈsuːo sorˈriːzo]", meaning: "그녀의 미소의" }
+        ],
+        literal: "그녀의 미소의 번쩍임",
+        free: "그녀의 미소가 빛나는 것"
+      },
+      {
+        line: "d'una stella vince il raggio;",
+        words: [
+          { word: "d'una stella", ipa: "[ˈduːna ˈstɛlla]", meaning: "별의" },
+          { word: "vince", ipa: "[ˈvintʃe]", meaning: "능가한다" },
+          { word: "il raggio", ipa: "[il ˈraddʒo]", meaning: "빛, 광선" }
+        ],
+        literal: "별의 빛을 능가한다;",
+        free: "별빛보다도 더 찬란하다;"
+      },
+      {
+        line: "il fulgor del suo bel viso",
+        words: [
+          { word: "il fulgor", ipa: "[il fulˈɡɔːr]", meaning: "광채" },
+          { word: "del suo bel viso", ipa: "[del ˈsuːo bɛl ˈviːzo]", meaning: "그녀의 아름다운 얼굴의" }
+        ],
+        literal: "그녀의 아름다운 얼굴의 광채는",
+        free: "그녀의 아름다운 얼굴에서 뿜어나오는 광채는"
+      },
+      {
+        line: "novo infonde a me coraggio.",
+        words: [
+          { word: "novo infonde", ipa: "[ˈnɔːvo inˈfɔnde]", meaning: "새로이 불어넣는다" },
+          { word: "a me coraggio", ipa: "[a me koˈraddʒo]", meaning: "나에게 용기를" }
+        ],
+        literal: "나에게 새로이 용기를 불어넣는다.",
+        free: "내게 새로운 용기를 불어넣어준다."
+      },
+      {
+        line: "Ah! l'amor ond'ardo",
+        words: [
+          { word: "l'amor", ipa: "[laˈmɔːr]", meaning: "사랑이" },
+          { word: "ond'ardo", ipa: "[onˈdardo]", meaning: "내가 불타는" }
+        ],
+        literal: "아! 내가 불타는 사랑이",
+        free: "아! 내 가슴을 불태우는 이 사랑이"
+      },
+      {
+        line: "le favelli in mio favor,",
+        words: [
+          { word: "le favelli", ipa: "[le faˈvɛlli]", meaning: "그녀에게 말해다오" },
+          { word: "in mio favor", ipa: "[in ˈmiːo faˈvɔːr]", meaning: "나를 위해" }
+        ],
+        literal: "나를 위해 그녀에게 말해다오,",
+        free: "나를 위해 그녀에게 전해다오,"
+      },
+      {
+        line: "sperda il sole d'un suo sguardo",
+        words: [
+          { word: "sperda", ipa: "[ˈspɛrda]", meaning: "흩어버려다오" },
+          { word: "il sole d'un suo sguardo", ipa: "[il ˈsoːle dun ˈsuːo ˈzɡwardo]", meaning: "그녀의 눈빛의 태양이" }
+        ],
+        literal: "그녀의 눈빛의 태양이 흩어버려다오",
+        free: "그녀의 눈빛 한 번으로 흩어버려다오"
+      },
+      {
+        line: "la tempesta del mio cor!",
+        words: [
+          { word: "la tempesta", ipa: "[la temˈpɛsta]", meaning: "폭풍을" },
+          { word: "del mio cor", ipa: "[del ˈmiːo kɔːr]", meaning: "내 마음의" }
+        ],
+        literal: "내 마음의 폭풍을!",
+        free: "내 가슴속의 폭풍을!"
+      },
+    ]
+  },
 };
 
-// ────────────────────────────────────────────
-// 상태
-// ────────────────────────────────────────────
-let prevScreen = 'main';
+function openAria(ariaId) {
+  const aria = ariaData[ariaId];
+  if (!aria) { alert('준비 중인 곡입니다! 곧 추가할게요 😊'); return; }
 
-// ────────────────────────────────────────────
-// 화면 전환
-// ────────────────────────────────────────────
-function goTo(screenId) {
-    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-    document.getElementById('screen-' + screenId).classList.add('active');
-    window.scrollTo(0, 0);
+  document.getElementById('nav-aria-title').textContent = aria.composer;
+  document.getElementById('detail-opera').textContent = aria.opera;
+  document.getElementById('detail-title').textContent = aria.title;
+  document.getElementById('detail-composer').textContent = aria.composer;
+
+  renderLyrics(aria);
+  renderVocab(aria);
+  renderTranslation(aria);
+
+  document.getElementById('main-page').classList.remove('active');
+  document.getElementById('aria-page').classList.add('active');
+
+  document.querySelectorAll('.segment-btn').forEach((b,i) => b.classList.toggle('active', i===0));
+  document.querySelectorAll('.tab-content').forEach((c,i) => c.classList.toggle('active', i===0));
+
+  window.scrollTo(0,0);
 }
 
-function goBackFromDetail() {
-    goTo(prevScreen);
+function goBack() {
+  document.getElementById('aria-page').classList.remove('active');
+  document.getElementById('main-page').classList.add('active');
+  window.scrollTo(0,0);
 }
 
-// ────────────────────────────────────────────
-// 탭 전환
-// ────────────────────────────────────────────
-function showTab(tab) {
-    document.querySelectorAll('.segment-btn').forEach((b, i) => {
-        b.classList.toggle('active', (tab === 'composer' && i === 0) || (tab === 'all' && i === 1));
+function switchTab(tabName, btn) {
+  document.querySelectorAll('.segment-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('tab-' + tabName).classList.add('active');
+}
+
+function renderLyrics(aria) {
+  const container = document.getElementById('tab-lyrics');
+  let html = '';
+  aria.lyrics.forEach((item, index) => {
+    html += `<div class="lyric-line" id="line-${index}" onclick="toggleAnalysis(${index})">${item.line}</div>`;
+    html += `<div class="analysis-panel" id="panel-${index}">
+      <div class="analysis-label">단어 분석</div>
+      <div class="word-grid">`;
+    item.words.forEach(w => {
+      html += `<div class="word-chip">
+        <div class="w">${w.word}</div>
+        <div class="ipa">${w.ipa}</div>
+        <div class="meaning">${w.meaning}</div>
+      </div>`;
     });
-    document.getElementById('tab-composer').style.display = tab === 'composer' ? '' : 'none';
-    document.getElementById('tab-all').style.display      = tab === 'all'      ? '' : 'none';
-
-    if (tab === 'all') renderAllList();
+    html += `</div>
+      <div class="analysis-label" style="margin-top:12px;">직역</div>
+      <div class="literal-text">${item.literal}</div>
+      <div class="analysis-label" style="margin-top:12px;">의역</div>
+      <div class="free-text">${item.free}</div>
+    </div>`;
+  });
+  container.innerHTML = html;
 }
 
-// ────────────────────────────────────────────
-// 전체 목록 렌더
-// ────────────────────────────────────────────
-function renderAllList() {
-    const el = document.getElementById('all-list');
-    el.innerHTML = songs.map(s => `
-        <div class="card-item" onclick="showDetail(${s.id}, 'main')">
-            <div class="card-icon ${composers[s.composer].bg}">${composers[s.composer].icon}</div>
-            <div class="card-content">
-                <div class="card-title">${s.title}</div>
-                <div class="card-subtitle">${s.opera} · ${s.composerName.split(' ').pop()}</div>
-            </div>
-            <div class="card-right"><span class="card-chevron">›</span></div>
-        </div>
-    `).join('');
+function toggleAnalysis(index) {
+  const line = document.getElementById('line-' + index);
+  const panel = document.getElementById('panel-' + index);
+  const isActive = panel.classList.contains('active');
+
+  document.querySelectorAll('.analysis-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.lyric-line').forEach(l => l.classList.remove('active'));
+
+  if (!isActive) {
+    panel.classList.add('active');
+    line.classList.add('active');
+  }
 }
 
-// ────────────────────────────────────────────
-// 작곡가별 목록
-// ────────────────────────────────────────────
-function showComposer(composerId) {
-    const c = composers[composerId];
-    const list = songs.filter(s => s.composer === composerId);
-
-    document.getElementById('comp-nav-title').textContent = composerId.charAt(0).toUpperCase() + composerId.slice(1);
-    document.getElementById('comp-title').textContent = c.name;
-    document.getElementById('comp-sub').textContent = c.sub;
-
-    document.getElementById('comp-list').innerHTML = list.map(s => `
-        <div class="card-item" onclick="showDetail(${s.id}, 'composer')">
-            <div class="card-icon ${c.bg}">${c.icon}</div>
-            <div class="card-content">
-                <div class="card-title">${s.title}</div>
-                <div class="card-subtitle">${s.opera} · ${s.voiceType}</div>
-            </div>
-            <div class="card-right"><span class="card-chevron">›</span></div>
-        </div>
-    `).join('');
-
-    goTo('composer');
+function renderVocab(aria) {
+  const container = document.getElementById('tab-vocab');
+  let html = '';
+  const seen = new Set();
+  aria.lyrics.forEach(item => {
+    item.words.forEach(w => {
+      if (!seen.has(w.word)) {
+        seen.add(w.word);
+        html += `<div class="vocab-item">
+          <div class="vocab-word">${w.word}</div>
+          <div class="vocab-right">
+            <div class="vocab-ipa">${w.ipa}</div>
+            <div class="vocab-meaning">${w.meaning}</div>
+          </div>
+        </div>`;
+      }
+    });
+  });
+  container.innerHTML = html;
 }
 
-// ────────────────────────────────────────────
-// 곡 상세
-// ────────────────────────────────────────────
-function showDetail(id, from) {
-    prevScreen = from;
-    const s = songs.find(x => x.id === id);
-    const c = composers[s.composer];
-
-    const lyricsHTML = s.lyrics.map(l => `
-        <div class="lyrics-row">
-            <div class="lyrics-original">${l.original}</div>
-            <div class="lyrics-ipa">${l.ipa}</div>
-            <div class="lyrics-translation">${l.translation}</div>
-        </div>
-    `).join('');
-
-    const wordsHTML = s.words.map(w => `
-        <div class="word-card">
-            <div class="word-original">${w.word}</div>
-            <div class="word-ipa">${w.ipa}</div>
-            <div class="word-meaning">${w.meaning}</div>
-            <div class="word-type">${w.type}</div>
-        </div>
-    `).join('');
-
-    document.getElementById('detail-content').innerHTML = `
-        <div class="detail-hero">
-            <div class="detail-opera-label">${s.opera}</div>
-            <div class="detail-title">${s.title}</div>
-            <div class="detail-composer">${s.composerName}</div>
-            <div class="detail-tags">
-                <span class="tag tag-blue">${s.language}</span>
-                <span class="tag tag-gray">${s.voiceType}</span>
-            </div>
-        </div>
-
-        <div class="section-title">원문 가사</div>
-        <div class="lyrics-card">${lyricsHTML}</div>
-
-        <div class="section-title">단어 분석 & 발음기호</div>
-        <div class="word-grid">${wordsHTML}</div>
-
-        <div class="section-title">번역</div>
-        <div class="translation-grid">
-            <div class="translation-card">
-                <div class="translation-label label-literal">직역</div>
-                <div class="translation-text">${s.literal}</div>
-            </div>
-            <div class="translation-card">
-                <div class="translation-label label-liberal">의역</div>
-                <div class="translation-text">${s.liberal}</div>
-            </div>
-        </div>
-    `;
-
-    goTo('detail');
+function renderTranslation(aria) {
+  const container = document.getElementById('tab-translation');
+  let html = '';
+  aria.lyrics.forEach(item => {
+    html += `<div class="translation-item">
+      <div class="trans-original">${item.line}</div>
+      <div class="trans-label">직역</div>
+      <div class="trans-literal">${item.literal}</div>
+      <div class="trans-label" style="margin-top:8px;">의역</div>
+      <div class="trans-free">${item.free}</div>
+    </div>`;
+  });
+  container.innerHTML = html;
 }
 </script>
 </body>
